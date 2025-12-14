@@ -325,6 +325,27 @@ body.green-theme footer button:hover {
     color: #1565c0;
 }
 
+.upcoming-matches .location {
+    color: #666;
+    font-size: 0.9em;
+    font-style: italic;
+}
+
+.team-badge {
+    display: inline-block;
+    background: #FF8C00;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.75em;
+    font-weight: bold;
+    margin-right: 8px;
+}
+
+.team-badge.main-team {
+    background: #9C1C2E;
+}
+
 /* Event links */
 .event-link {
     color: #1565c0;
@@ -350,6 +371,19 @@ body.green-theme footer button:hover {
 }
 
 .match-link .event-link {
+    display: inline-block;
+    padding: 8px 16px;
+    font-size: 0.9em;
+}
+
+.calendar-link {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #bbdefb;
+    text-align: center;
+}
+
+.calendar-link .event-link {
     display: inline-block;
     padding: 8px 16px;
     font-size: 0.9em;

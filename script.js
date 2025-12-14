@@ -1,5 +1,10 @@
-// Sparta Praha team ID in SofaScore: 2218
-const SPARTA_TEAM_ID = 2218;
+// Sparta Praha team IDs in SofaScore
+const SPARTA_TEAMS = [
+    { id: 2218, name: 'Muži A', mainTeam: true },
+    { id: 4866, name: 'Muži B (U21)', mainTeam: false },
+    { id: 38255, name: 'Ženy', mainTeam: false }
+];
+const SPARTA_TEAM_ID = 2218; // Main team for today's match check
 const API_BASE_URL = 'https://api.sofascore.com/api/v1';
 
 // Get elements
@@ -63,15 +68,29 @@ async function checkTodayMatch() {
             return eventDateStr === today;
         });
 
-        // Get next 4 upcoming HOME matches at Letná (after today)
+        // Fetch upcoming home matches from ALL Sparta teams
         const todayTimestamp = new Date(today).getTime();
-        const upcomingMatches = (nextData.events || [])
-            .filter(event => {
-                const eventTimestamp = event.startTimestamp * 1000;
-                const isHome = event.homeTeam.id === SPARTA_TEAM_ID;
-                return eventTimestamp > todayTimestamp + (24 * 60 * 60 * 1000) && isHome; // After today and home match
+        const allTeamMatches = await Promise.all(
+            SPARTA_TEAMS.map(async (team) => {
+                const response = await fetch(`${API_BASE_URL}/team/${team.id}/events/next/0`);
+                if (!response.ok) return [];
+
+                const data = await response.json();
+                return (data.events || [])
+                    .filter(event => {
+                        const eventTimestamp = event.startTimestamp * 1000;
+                        const isHome = event.homeTeam.id === team.id;
+                        return eventTimestamp > todayTimestamp + (24 * 60 * 60 * 1000) && isHome;
+                    })
+                    .map(event => ({ ...event, spartaTeam: team.name, spartaMainTeam: team.mainTeam }));
             })
-            .slice(0, 4);
+        );
+
+        // Combine and sort by date, take first 10
+        const upcomingMatches = allTeamMatches
+            .flat()
+            .sort((a, b) => a.startTimestamp - b.startTimestamp)
+            .slice(0, 10);
 
         displayResult(todayMatch, upcomingMatches);
     } catch (error) {
@@ -121,22 +140,30 @@ function formatUpcomingMatches(matches) {
         });
 
         const opponent = match.awayTeam.name; // Always away team since we filter for home matches
+        const teamName = match.spartaTeam || 'Muži A';
+        const isMainTeam = match.spartaMainTeam !== false; // Default to true if not specified
+        const badgeClass = isMainTeam ? 'team-badge main-team' : 'team-badge';
+
         const eventUrl = `https://www.sofascore.com/event/${match.id}`;
 
         return `
             <li>
+                <span class="${badgeClass}">${teamName}</span>
                 <strong>${dateStr} ${startTimeStr}-${endTimeStr}</strong> - ${opponent}
-                <a href="${eventUrl}" target="_blank" class="event-link">📋 SofaScore</a>
+                <a href="${eventUrl}" target="_blank" class="event-link">🔗</a>
             </li>
         `;
     }).join('');
 
     return `
         <div class="upcoming-matches">
-            <h4>Nadcházející zápasy na Letné:</h4>
+            <h4>Nadcházející zápasy na Letné - Všechny týmy:</h4>
             <ul>
                 ${matchesHtml}
             </ul>
+            <div class="calendar-link">
+                <a href="https://sparta.cz/cs/zapasy/1-muzi-a/2025-2026/kalendar" target="_blank" class="event-link">📅 Zobrazit kompletní kalendář</a>
+            </div>
         </div>
     `;
 }
@@ -175,6 +202,12 @@ function displayResult(match, upcomingMatches = []) {
     }
 
     const opponent = isHome ? match.awayTeam : match.homeTeam;
+
+    // Determine which Sparta team this match belongs to
+    const spartaTeamInfo = SPARTA_TEAMS.find(team =>
+        match.homeTeam.id === team.id || match.awayTeam.id === team.id
+    ) || SPARTA_TEAMS[0]; // Default to main team
+    const teamBadgeClass = spartaTeamInfo.mainTeam ? 'team-badge main-team' : 'team-badge';
 
     // Format match time as "14. 12. 2025 18:30-19:33"
     const startDate = new Date(match.startTimestamp * 1000);
@@ -232,7 +265,7 @@ function displayResult(match, upcomingMatches = []) {
         matchInfoEl.innerHTML = `
             <div class="yes-match">
                 <div class="emoji">🎉</div>
-                <h3>Ano! Sparta dnes hraje na Letné!</h3>
+                <h3>Sparta hraje na Letné!</h3>
                 <div class="match-details">
                     <div class="teams">
                         <div class="team">
@@ -246,11 +279,11 @@ function displayResult(match, upcomingMatches = []) {
                         </div>
                     </div>
                     <div class="match-time">
-                        <strong>Čas:</strong> ${matchTimeRange}
+                        <span class="${teamBadgeClass}">${spartaTeamInfo.name}</span> ${matchTimeRange}
                     </div>
                     ${venueName ? `<div class="match-venue"><strong>Stadion:</strong> ${venueName}</div>` : ''}
                     <div class="match-link">
-                        <a href="https://www.sofascore.com/event/${match.id}" target="_blank" class="event-link">📋 Zobrazit na SofaScore</a>
+                        <a href="https://www.sofascore.com/event/${match.id}" target="_blank" class="event-link">🔗 Zobrazit na SofaScore</a>
                     </div>
                 </div>
                 ${formatUpcomingMatches(upcomingMatches)}
@@ -266,11 +299,11 @@ function displayResult(match, upcomingMatches = []) {
                 <p>Sparta dnes hraje <strong>${location}</strong> proti týmu ${opponent.name}</p>
                 <div class="match-details">
                     <div class="match-time">
-                        <strong>Čas:</strong> ${matchTimeRange}
+                        <span class="${teamBadgeClass}">${spartaTeamInfo.name}</span> ${matchTimeRange}
                     </div>
                     ${venueName && isHome ? `<div class="match-venue"><strong>Stadion:</strong> ${venueName}</div>` : ''}
                     <div class="match-link">
-                        <a href="https://www.sofascore.com/event/${match.id}" target="_blank" class="event-link">📋 Zobrazit na SofaScore</a>
+                        <a href="https://www.sofascore.com/event/${match.id}" target="_blank" class="event-link">🔗 Zobrazit na SofaScore</a>
                     </div>
                 </div>
                 ${formatUpcomingMatches(upcomingMatches)}
