@@ -13,7 +13,7 @@ struct NoMatchView: View {
 
     var body: some View {
         VStack(spacing: 20) {
-            Text("☮️")
+            Text("☯️")
                 .font(.system(size: 80))
 
             if isPlayingElsewhere, let match = match {

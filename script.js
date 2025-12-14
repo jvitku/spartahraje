@@ -179,7 +179,7 @@ function displayResult(match, upcomingMatches = []) {
         document.body.classList.remove('green-theme');
         matchInfoEl.innerHTML = `
             <div class="no-match">
-                <div class="emoji">☮️</div>
+                <div class="emoji">☯️</div>
                 <h3>Ne, dnes Sparta nehraje</h3>
                 <p>Žádný zápas není naplánován na dnešek.</p>
             </div>
@@ -296,7 +296,7 @@ function displayResult(match, upcomingMatches = []) {
         const location = isHome ? 'doma (ale ne na Letné)' : 'venku';
         matchInfoEl.innerHTML = `
             <div class="no-match">
-                <div class="emoji">☮️</div>
+                <div class="emoji">☯️</div>
                 <h3>Ne, dnes Sparta nehraje na Letné</h3>
                 <p>Sparta dnes hraje <strong>${location}</strong> proti týmu ${opponent.name}</p>
                 <div class="match-details">
