@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hraje dnes Sparta doma?</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>⚽ AC Sparta Praha</h1>
+            <h2>Hraje dnes na Letné?</h2>
+        </header>
+
+        <div id="loading" class="loading">
+            <div class="spinner"></div>
+            <p>Načítám informace o zápasech...</p>
+        </div>
+
+        <div id="result" class="result hidden">
+            <div id="matchInfo"></div>
+        </div>
+
+        <div id="error" class="error hidden">
+            <p>Nepodařilo se načíst informace o zápasech.</p>
+            <p class="error-detail" id="errorDetail"></p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

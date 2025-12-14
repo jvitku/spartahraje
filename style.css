@@ -1,0 +1,386 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background: linear-gradient(135deg, #9C1C2E 0%, #6B1219 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    color: #333;
+}
+
+.container {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    max-width: 600px;
+    width: 100%;
+    overflow: hidden;
+}
+
+header {
+    background: linear-gradient(135deg, #9C1C2E 0%, #B92234 100%);
+    color: white;
+    padding: 30px;
+    text-align: center;
+}
+
+header h1 {
+    font-size: 2.5em;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+header h2 {
+    font-size: 1.3em;
+    font-weight: normal;
+    opacity: 0.95;
+}
+
+.loading, .result, .error {
+    padding: 40px 30px;
+    text-align: center;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Loading spinner */
+.spinner {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #9C1C2E;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 20px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Result sections */
+.emoji {
+    font-size: 4em;
+    margin-bottom: 20px;
+}
+
+.yes-match {
+    color: #155724;
+}
+
+.no-match {
+    color: #856404;
+}
+
+.yes-match h3 {
+    color: #155724;
+    font-size: 1.8em;
+    margin-bottom: 20px;
+}
+
+.no-match h3 {
+    color: #856404;
+    font-size: 1.8em;
+    margin-bottom: 15px;
+}
+
+.match-details {
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 20px;
+    text-align: left;
+}
+
+.teams {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.team {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+    min-width: 100px;
+}
+
+.team img {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+}
+
+.team span {
+    font-size: 0.9em;
+    text-align: center;
+    font-weight: 500;
+}
+
+.vs {
+    font-weight: bold;
+    color: #9C1C2E;
+    font-size: 1.2em;
+}
+
+.match-time, .match-competition, .match-venue {
+    padding: 10px 0;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.match-venue {
+    border-bottom: none;
+}
+
+.match-details strong {
+    color: #9C1C2E;
+}
+
+/* Error section */
+.error {
+    color: #721c24;
+}
+
+.error-detail {
+    background: #f8d7da;
+    border: 1px solid #f5c6cb;
+    border-radius: 5px;
+    padding: 10px;
+    margin-top: 15px;
+    font-size: 0.9em;
+}
+
+/* API Key section */
+.api-key-section {
+    padding: 30px;
+    background: #f8f9fa;
+    border-top: 1px solid #dee2e6;
+}
+
+.api-key-section h3 {
+    color: #9C1C2E;
+    margin-bottom: 15px;
+}
+
+.api-key-section p {
+    margin-bottom: 15px;
+    line-height: 1.6;
+}
+
+.api-key-section ol {
+    margin-left: 20px;
+    margin-bottom: 20px;
+    line-height: 1.8;
+}
+
+.api-key-section a {
+    color: #9C1C2E;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.api-key-section a:hover {
+    text-decoration: underline;
+}
+
+.input-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.input-group input {
+    flex: 1;
+    padding: 12px;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    font-size: 1em;
+}
+
+.input-group button {
+    padding: 12px 24px;
+    background: #9C1C2E;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.input-group button:hover {
+    background: #7A1623;
+}
+
+/* Footer */
+footer {
+    padding: 20px;
+    text-align: center;
+    background: #f8f9fa;
+    border-top: 1px solid #dee2e6;
+}
+
+footer button {
+    padding: 10px 20px;
+    background: white;
+    color: #9C1C2E;
+    border: 2px solid #9C1C2E;
+    border-radius: 5px;
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+footer button:hover {
+    background: #9C1C2E;
+    color: white;
+}
+
+/* Green theme - when Sparta doesn't play at Letná */
+body.green-theme {
+    background: linear-gradient(135deg, #2E7D32 0%, #1B5E20 100%);
+}
+
+body.green-theme header {
+    background: linear-gradient(135deg, #2E7D32 0%, #388E3C 100%);
+}
+
+body.green-theme .vs {
+    color: #2E7D32;
+}
+
+body.green-theme .match-details strong {
+    color: #2E7D32;
+}
+
+body.green-theme .spinner {
+    border-top: 4px solid #2E7D32;
+}
+
+body.green-theme .input-group button {
+    background: #2E7D32;
+}
+
+body.green-theme .input-group button:hover {
+    background: #1B5E20;
+}
+
+body.green-theme footer button {
+    color: #2E7D32;
+    border: 2px solid #2E7D32;
+}
+
+body.green-theme footer button:hover {
+    background: #2E7D32;
+}
+
+/* Upcoming matches */
+.upcoming-matches {
+    margin-top: 30px;
+    padding: 20px;
+    background: #e3f2fd;
+    border: 2px solid #2196f3;
+    border-radius: 10px;
+    text-align: left;
+}
+
+.upcoming-matches h4 {
+    color: #1565c0;
+    margin-bottom: 15px;
+    font-size: 1.1em;
+}
+
+.upcoming-matches ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.upcoming-matches li {
+    padding: 10px 0;
+    border-bottom: 1px solid #bbdefb;
+    font-size: 0.95em;
+}
+
+.upcoming-matches li:last-child {
+    border-bottom: none;
+}
+
+.upcoming-matches strong {
+    color: #1565c0;
+}
+
+/* Debug information */
+.debug-info {
+    margin-top: 30px;
+    padding: 20px;
+    background: #fff3cd;
+    border: 2px solid #ffc107;
+    border-radius: 10px;
+    text-align: left;
+    font-size: 0.9em;
+}
+
+.debug-info h4 {
+    color: #856404;
+    margin-bottom: 15px;
+    font-size: 1.1em;
+}
+
+.debug-info ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.debug-info li {
+    padding: 8px 0;
+    border-bottom: 1px solid #fff3cd;
+    word-break: break-word;
+}
+
+.debug-info li:last-child {
+    border-bottom: none;
+}
+
+.debug-info strong {
+    color: #856404;
+}
+
+/* Responsive design */
+@media (max-width: 600px) {
+    header h1 {
+        font-size: 2em;
+    }
+
+    header h2 {
+        font-size: 1.1em;
+    }
+
+    .teams {
+        flex-direction: column;
+    }
+
+    .input-group {
+        flex-direction: column;
+    }
+
+    .input-group button {
+        width: 100%;
+    }
+}
