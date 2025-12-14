@@ -12,7 +12,7 @@ struct UpcomingMatchesView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 15) {
-            Text("Nadcházející zápasy na Letné - Všechny týmy:")
+            Text("Nadcházející zápasy")
                 .font(.system(size: 16, weight: .semibold))
                 .foregroundColor(.upcomingText)
 

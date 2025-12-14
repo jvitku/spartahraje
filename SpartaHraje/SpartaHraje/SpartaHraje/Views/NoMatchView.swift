@@ -35,11 +35,6 @@ struct NoMatchView: View {
                     .font(.system(size: 24, weight: .bold))
                     .foregroundColor(Color(red: 0.522, green: 0.392, blue: 0.016))
                     .multilineTextAlignment(.center)
-
-                Text("Žádný zápas není naplánován na dnešek.")
-                    .font(.system(size: 16))
-                    .foregroundColor(.secondary)
-                    .multilineTextAlignment(.center)
             }
         }
         .padding(40)

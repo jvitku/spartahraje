@@ -55,12 +55,12 @@ class MatchViewModel: ObservableObject {
     }
 
     private func updateTheme() {
-        if let match = todayMatch {
-            // Green theme if not playing at Letná
-            theme = match.isAtLetna ? .red : .green
-        } else {
-            // Red theme if no match today
+        if todayMatch != nil {
+            // Match today - red theme (regardless of location)
             theme = .red
+        } else {
+            // No match today - green theme
+            theme = .green
         }
     }
 

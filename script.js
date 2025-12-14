@@ -69,7 +69,7 @@ async function checkTodayMatch() {
         });
 
         // Fetch upcoming home matches from ALL Sparta teams
-        const todayTimestamp = new Date(today).getTime();
+        const tomorrowTimestamp = new Date(today).getTime() + (24 * 60 * 60 * 1000);
         const allTeamMatches = await Promise.all(
             SPARTA_TEAMS.map(async (team) => {
                 const response = await fetch(`${API_BASE_URL}/team/${team.id}/events/next/0`);
@@ -80,7 +80,7 @@ async function checkTodayMatch() {
                     .filter(event => {
                         const eventTimestamp = event.startTimestamp * 1000;
                         const isHome = event.homeTeam.id === team.id;
-                        return eventTimestamp > todayTimestamp + (24 * 60 * 60 * 1000) && isHome;
+                        return eventTimestamp >= tomorrowTimestamp && isHome;
                     })
                     .map(event => ({ ...event, spartaTeam: team.name, spartaMainTeam: team.mainTeam }));
             })
@@ -157,7 +157,7 @@ function formatUpcomingMatches(matches) {
 
     return `
         <div class="upcoming-matches">
-            <h4>Nadcházející zápasy na Letné - Všechny týmy:</h4>
+            <h4>Nadcházející zápasy</h4>
             <ul>
                 ${matchesHtml}
             </ul>
@@ -175,17 +175,20 @@ function displayResult(match, upcomingMatches = []) {
     resultEl.classList.remove('hidden');
 
     if (!match) {
-        // No match today - keep red theme
-        document.body.classList.remove('green-theme');
+        // No match today - green theme
+        document.body.classList.add('green-theme');
         matchInfoEl.innerHTML = `
             <div class="no-match">
                 <div class="emoji">☯️</div>
                 <h3>Ne, dnes Sparta nehraje</h3>
-                <p>Žádný zápas není naplánován na dnešek.</p>
             </div>
+            ${formatUpcomingMatches(upcomingMatches)}
         `;
         return;
     }
+
+    // Match today - red theme (regardless of location)
+    document.body.classList.remove('green-theme');
 
     const isHome = match.homeTeam.id === SPARTA_TEAM_ID;
     const venueName = match.venue?.stadium?.name || match.venue?.name || '';
@@ -193,13 +196,6 @@ function displayResult(match, upcomingMatches = []) {
     // If Sparta is home, assume it's at Letná (since API doesn't always provide venue info)
     // But if venue name is provided, check it matches Letná stadium names
     const isAtLetna = isHome && (venueName === '' || isLetnaStadium(venueName));
-
-    // Change theme to green if not playing at Letná
-    if (!isAtLetna) {
-        document.body.classList.add('green-theme');
-    } else {
-        document.body.classList.remove('green-theme');
-    }
 
     const opponent = isHome ? match.awayTeam : match.homeTeam;
 
