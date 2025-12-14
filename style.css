@@ -325,6 +325,36 @@ body.green-theme footer button:hover {
     color: #1565c0;
 }
 
+/* Event links */
+.event-link {
+    color: #1565c0;
+    text-decoration: none;
+    font-size: 0.85em;
+    margin-left: 10px;
+    padding: 4px 8px;
+    background: #e3f2fd;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.event-link:hover {
+    background: #1565c0;
+    color: white;
+}
+
+.match-link {
+    margin-top: 15px;
+    padding-top: 10px;
+    border-top: 1px solid #dee2e6;
+    text-align: center;
+}
+
+.match-link .event-link {
+    display: inline-block;
+    padding: 8px 16px;
+    font-size: 0.9em;
+}
+
 /* Debug information */
 .debug-info {
     margin-top: 30px;

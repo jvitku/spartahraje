@@ -63,7 +63,7 @@ async function checkTodayMatch() {
             return eventDateStr === today;
         });
 
-        // Get next 2 upcoming HOME matches at Letná (after today)
+        // Get next 4 upcoming HOME matches at Letná (after today)
         const todayTimestamp = new Date(today).getTime();
         const upcomingMatches = (nextData.events || [])
             .filter(event => {
@@ -71,7 +71,7 @@ async function checkTodayMatch() {
                 const isHome = event.homeTeam.id === SPARTA_TEAM_ID;
                 return eventTimestamp > todayTimestamp + (24 * 60 * 60 * 1000) && isHome; // After today and home match
             })
-            .slice(0, 2);
+            .slice(0, 4);
 
         displayResult(todayMatch, upcomingMatches);
     } catch (error) {
@@ -121,10 +121,12 @@ function formatUpcomingMatches(matches) {
         });
 
         const opponent = match.awayTeam.name; // Always away team since we filter for home matches
+        const eventUrl = `https://www.sofascore.com/event/${match.id}`;
 
         return `
             <li>
                 <strong>${dateStr} ${startTimeStr}-${endTimeStr}</strong> - ${opponent}
+                <a href="${eventUrl}" target="_blank" class="event-link">📋 SofaScore</a>
             </li>
         `;
     }).join('');
@@ -247,6 +249,9 @@ function displayResult(match, upcomingMatches = []) {
                         <strong>Čas:</strong> ${matchTimeRange}
                     </div>
                     ${venueName ? `<div class="match-venue"><strong>Stadion:</strong> ${venueName}</div>` : ''}
+                    <div class="match-link">
+                        <a href="https://www.sofascore.com/event/${match.id}" target="_blank" class="event-link">📋 Zobrazit na SofaScore</a>
+                    </div>
                 </div>
                 ${formatUpcomingMatches(upcomingMatches)}
                 ${debugInfo}
@@ -264,6 +269,9 @@ function displayResult(match, upcomingMatches = []) {
                         <strong>Čas:</strong> ${matchTimeRange}
                     </div>
                     ${venueName && isHome ? `<div class="match-venue"><strong>Stadion:</strong> ${venueName}</div>` : ''}
+                    <div class="match-link">
+                        <a href="https://www.sofascore.com/event/${match.id}" target="_blank" class="event-link">📋 Zobrazit na SofaScore</a>
+                    </div>
                 </div>
                 ${formatUpcomingMatches(upcomingMatches)}
                 ${debugInfo}
