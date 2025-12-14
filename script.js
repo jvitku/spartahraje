@@ -179,7 +179,7 @@ function displayResult(match, upcomingMatches = []) {
         document.body.classList.remove('green-theme');
         matchInfoEl.innerHTML = `
             <div class="no-match">
-                <div class="emoji">😴</div>
+                <div class="emoji">☮️</div>
                 <h3>Ne, dnes Sparta nehraje</h3>
                 <p>Žádný zápas není naplánován na dnešek.</p>
             </div>
@@ -244,9 +244,11 @@ function displayResult(match, upcomingMatches = []) {
 
     // Debug information
     const debugInfo = `
-        <div class="debug-info">
-            <h4>Debug informace:</h4>
-            <ul>
+        <div class="debug-info collapsed">
+            <h4 class="debug-toggle" onclick="this.parentElement.classList.toggle('collapsed')">
+                <span class="toggle-icon">▶</span> Debug informace
+            </h4>
+            <ul class="debug-content">
                 <li><strong>Domácí tým:</strong> ${match.homeTeam.name} (ID: ${match.homeTeam.id})</li>
                 <li><strong>Hostující tým:</strong> ${match.awayTeam.name} (ID: ${match.awayTeam.id})</li>
                 <li><strong>Je Sparta doma?</strong> ${isHome ? 'Ano' : 'Ne'}</li>
@@ -264,7 +266,7 @@ function displayResult(match, upcomingMatches = []) {
     if (isAtLetna) {
         matchInfoEl.innerHTML = `
             <div class="yes-match">
-                <div class="emoji">🎉</div>
+                <div class="emoji">⚽</div>
                 <h3>Sparta hraje na Letné!</h3>
                 <div class="match-details">
                     <div class="teams">
@@ -294,7 +296,7 @@ function displayResult(match, upcomingMatches = []) {
         const location = isHome ? 'doma (ale ne na Letné)' : 'venku';
         matchInfoEl.innerHTML = `
             <div class="no-match">
-                <div class="emoji">${isHome ? '🏟️' : '✈️'}</div>
+                <div class="emoji">☮️</div>
                 <h3>Ne, dnes Sparta nehraje na Letné</h3>
                 <p>Sparta dnes hraje <strong>${location}</strong> proti týmu ${opponent.name}</p>
                 <div class="match-details">

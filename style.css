@@ -406,6 +406,40 @@ body.green-theme footer button:hover {
     font-size: 1.1em;
 }
 
+.debug-toggle {
+    cursor: pointer;
+    user-select: none;
+    margin-bottom: 0 !important;
+}
+
+.debug-toggle:hover {
+    opacity: 0.8;
+}
+
+.toggle-icon {
+    display: inline-block;
+    transition: transform 0.3s;
+}
+
+.debug-info:not(.collapsed) .toggle-icon {
+    transform: rotate(90deg);
+}
+
+.debug-content {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 1000px;
+    overflow: hidden;
+    transition: max-height 0.3s ease, margin-top 0.3s ease;
+    margin-top: 15px;
+}
+
+.debug-info.collapsed .debug-content {
+    max-height: 0;
+    margin-top: 0;
+}
+
 .debug-info ul {
     list-style: none;
     padding: 0;
