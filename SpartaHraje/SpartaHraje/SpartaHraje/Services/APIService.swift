@@ -36,8 +36,8 @@ actor APIService {
 
     private init() {
         let config = URLSessionConfiguration.default
-        config.timeoutIntervalForRequest = 15
-        config.timeoutIntervalForResource = 30
+        config.timeoutIntervalForRequest = 30  // Increased from 15
+        config.timeoutIntervalForResource = 60  // Increased from 30
         self.session = URLSession(configuration: config)
     }
 

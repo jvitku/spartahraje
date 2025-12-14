@@ -89,17 +89,20 @@ class NotificationManager: ObservableObject {
 
         let content = UNMutableNotificationContent()
 
-        // Determine team name
+        // Determine team name, date and time
         let teamName = match.spartaTeam?.name ?? "Sparta"
         let opponent = match.opponent.name
+        let matchDate = match.startDate.czechDateString()
+        let startTime = match.startDate.czechTimeString()
+        let endTime = match.endDate.czechTimeString()
+        let dateTimeRange = "\(matchDate) \(startTime)-\(endTime)"
 
         if daysBefore == 3 {
             content.title = "Sparta hraje za 3 dny!"
-            content.body = "\(teamName) vs \(opponent) na Letné"
+            content.body = "\(teamName) vs \(opponent) na Letné (\(dateTimeRange))"
         } else if daysBefore == 1 {
-            let time = match.startDate.czechTimeString()
             content.title = "Sparta hraje zítra!"
-            content.body = "\(teamName) vs \(opponent) na Letné v \(time)"
+            content.body = "\(teamName) vs \(opponent) na Letné (\(dateTimeRange))"
         }
 
         content.sound = .default
@@ -129,7 +132,7 @@ class NotificationManager: ObservableObject {
     func testNotification() async {
         let content = UNMutableNotificationContent()
         content.title = "Test: Sparta hraje za 3 dny!"
-        content.body = "Sparta Praha vs Test Team na Letné"
+        content.body = "Sparta Praha vs Test Team na Letné (20. 12. 2025 18:00-20:00)"
         content.sound = .default
         content.badge = 1
 
